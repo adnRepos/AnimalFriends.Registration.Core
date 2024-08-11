@@ -1,7 +1,5 @@
 ﻿using AnimalFriends.Registration.API.Models;
 using Dapper;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Collections.Generic;
 
 namespace AnimalFriends.Registration.API.Data
 {
@@ -21,12 +19,26 @@ namespace AnimalFriends.Registration.API.Data
 
         public async Task<int> Create(RegistrationDbo dbo)
         {
-            throw new NotImplementedException();
+            const string Query = @"INSERT INTO[dbo].[Customer] ([FirstName],[LastName],[ReferenceNumber],[Email],[DateOfBirth])
+                                    VALUES (@firstName,@LastName,@ReferenceNumber,@Email,@DateOfBirth) 
+                                    SELECT CAST(SCOPE_IDENTITY() as int)";
+
+            using (var conn = await _db.CreateOpenConnection())
+            {
+                return await conn.ExecuteAsync(Query, dbo);
+            };
+
         }
 
         public async Task<RegistrationDbo> Get(int id)
         {
-           throw new NotImplementedException();
+            const string Query = @"SELECT * from Customer Where Customerid = @id";
+
+            using (var conn = await _db.CreateOpenConnection())
+            {
+                return await conn.QuerySingleAsync<RegistrationDbo>(Query, new { id });
+            };
+
         }
     }
 }
