@@ -80,7 +80,7 @@ namespace AnimalFriends.Registration.API.Services
                     throw new InvalidInputException<RegistrationInput>(input, nameof(input.Email));
                 }
 
-                if (input.DateOfBirth.HasValue)
+                if (!input.DateOfBirth.HasValue)
                 {
                     throw new InvalidInputException<RegistrationInput>(input, nameof(input.Email));
                 }

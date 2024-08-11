@@ -49,6 +49,15 @@ namespace AnimalFriends.Registration.API.Data
         /// <returns></returns>
         public async Task InitDb()
         {
+            // create database if it doesn't exist
+            const string db_sql = $"IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'TaskDb') CREATE DATABASE [TaskDb];";
+            using (var conn = await CreateOpenConnection(IsMaster: true))
+            {
+                await conn.ExecuteAsync(db_sql);
+            };
+
+            // create tables if dones't exists
+            await InitTables();
         }
 
         /// <summary>
@@ -57,6 +66,27 @@ namespace AnimalFriends.Registration.API.Data
         /// <returns></returns>
         private async Task InitTables()
         {
+            const string table_sql = @$" USE [TaskDb] 
+                                      IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE  TABLE_NAME = 'Customer')) 
+                                       BEGIN
+                                            CREATE TABLE [dbo].[Customer](
+	                                        [CustomerId] [int] IDENTITY(1,1) NOT NULL,
+	                                        [FirstName] [nvarchar](50) NOT NULL,
+	                                        [LastName] [nvarchar](50) NOT NULL,
+	                                        [ReferenceNumber] [nvarchar](10) NOT NULL,
+	                                        [Email] [nvarchar](100) NULL,
+	                                        [DateOfBirth] [date] NULL,
+                                            CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED 
+                                        (
+	                                        [CustomerId] ASC
+                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+                                        ) ON [PRIMARY]
+                                        
+                                       END";
+            using (var conn = await CreateOpenConnection(IsMaster: true))
+            {
+                await conn.ExecuteAsync(table_sql);
+            };
         }
 
     }

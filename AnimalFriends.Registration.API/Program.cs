@@ -69,8 +69,13 @@ builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyCont
 //============================Register Services============================
 
 
-var app = builder.Build();
 
+var app = builder.Build();
+//============================ensure database and tables exist============================
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<IDb>();
+await context.InitDb();
+//============================ensure database and tables exist============================
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
