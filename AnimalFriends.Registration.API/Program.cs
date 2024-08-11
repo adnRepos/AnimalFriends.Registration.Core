@@ -5,6 +5,7 @@ using FluentValidation;
 using System;
 using System.Text.Json.Serialization;
 using FluentValidation.AspNetCore;
+using AnimalFriends.Registration.API.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,9 +54,12 @@ builder.Configuration
 //============================Register Services============================
 
 builder.Services
+       .AddSingleton<IDbConfig, DbConfig>()
+       .AddSingleton<IDb, Db>()
        .AddScoped<IRegistrationData, RegistrationData>()
        .AddScoped<IRegistrationService, RegistrationService>();
 
+builder.Services.AddAutoMapper(typeof(MapperProfile));
 //============================Register Services============================
 
 
