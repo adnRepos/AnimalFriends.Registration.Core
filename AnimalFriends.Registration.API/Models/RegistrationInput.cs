@@ -5,7 +5,10 @@ namespace AnimalFriends.Registration.API.Models
 {
     public class RegistrationInput
     {
-       
+        public const string ReferenceNumberRegX = @"^[A-Z]{2}-[0-9]{6}$";
+        public const string EmailregX = "^[a-z0-9]{4,}@[a-z0-9]{2,}.(com|co.uk)";
+        public const string FirstLastNameRegX = @"^[a-z]{3,50}$";
+
         [Required(ErrorMessage = "* Required")]
         [RegularExpression(@"^[a-z]{3,50}$", ErrorMessage = " Policy holder’s first name must be between 3 and 50 chars")]
         public required string FirstName { get; set; }
@@ -18,7 +21,7 @@ namespace AnimalFriends.Registration.API.Models
         [RegularExpression(@"^[A-Z]{2}-[0-9]{6}$", ErrorMessage = "Policy Reference number must match the following format 'XX-999999'")]
         public required string ReferenceNumber { get; set; }
 
-        // credit - slight modified to match least chars etc
+        // credit - slight modified to match least chars and uk domain etc
         // https://stackabuse.com/validate-email-addresses-with-regular-expressions-in-javascript/
         
         [RegularExpression("^[a-z0-9]{4,}@[a-z0-9]{2,}.(com|co.uk)",

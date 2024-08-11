@@ -18,5 +18,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AnimalFriends.Registration.API\AnimalFriends.Registration.API.csproj" />
+  </ItemGroup>
 
 </Project>
