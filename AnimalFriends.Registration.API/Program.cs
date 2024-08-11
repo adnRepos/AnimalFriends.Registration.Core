@@ -63,6 +63,9 @@ builder.Services
         .AddScoped<IRegistrationService, RegistrationService>();
 
 builder.Services.AddAutoMapper(typeof(MapperProfile));
+
+builder.Services.AddValidatorsFromAssemblyContaining<RegistrationValidator>();
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegistrationInput>());
 //============================Register Services============================
 
 

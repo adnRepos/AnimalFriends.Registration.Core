@@ -12,7 +12,8 @@ namespace AnimalFriends.Registration.API.Attributes
             DateTime? date = value as DateTime?;
             if (date == null)
             {
-                throw new ArgumentNullException(nameof(date));
+                return true;
+                //throw new ArgumentNullException(nameof(date));
             }
 
             var dob = new Age(date.Value.Date, DateTime.Now.Date);
