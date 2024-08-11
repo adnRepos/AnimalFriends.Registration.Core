@@ -7,15 +7,15 @@ namespace AnimalFriends.Registration.API.Models
     {
        
         [Required(ErrorMessage = "* Required")]
-        [RegularExpression(@"^[a-z]{3,50}$", ErrorMessage = " Policy holder’s first name should be between 3 and 50 chars")]
+        [RegularExpression(@"^[a-z]{3,50}$", ErrorMessage = " Policy holder’s first name must be between 3 and 50 chars")]
         public required string FirstName { get; set; }
 
         [Required(ErrorMessage = "* Required")]
-        [RegularExpression(@"^[a-z]{3,50}$", ErrorMessage = " Policy holder’s last name should be between 3 and 50 chars")]
+        [RegularExpression(@"^[a-z]{3,50}$", ErrorMessage = " Policy holder’s last name must be between 3 and 50 chars")]
         public required string LastName { get; set; }
 
         [Required(ErrorMessage = "* Required")]
-        [RegularExpression(@"^[A-Z]{2}-[0-9]{6}$", ErrorMessage = "Policy Reference number should match the following format 'XX-999999'")]
+        [RegularExpression(@"^[A-Z]{2}-[0-9]{6}$", ErrorMessage = "Policy Reference number must match the following format 'XX-999999'")]
         public required string ReferenceNumber { get; set; }
 
         // credit - slight modified to match least chars etc
@@ -26,6 +26,7 @@ namespace AnimalFriends.Registration.API.Models
                           and then another string of at least 2 alpha numeric chars. The email address should end in either '.com' or '.co.uk'")]
         public string? Email { get; set; }
 
+        [Over18AgeValidation(ErrorMessage ="Age Must be Over 18 or More")]
         public DateTime? DateOfBirth { get; set; }
     }
 }

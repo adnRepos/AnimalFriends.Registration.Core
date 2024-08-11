@@ -53,11 +53,14 @@ builder.Configuration
 
 //============================Register Services============================
 
+var config = builder.Configuration.GetSection("DbConfig").Get<DbConfig>();
+
 builder.Services
-       .AddSingleton<IDbConfig, DbConfig>()
-       .AddSingleton<IDb, Db>()
-       .AddScoped<IRegistrationData, RegistrationData>()
-       .AddScoped<IRegistrationService, RegistrationService>();
+        .AddSingleton(config)
+        .AddSingleton<IDbConfig>(sp => sp.GetRequiredService<DbConfig>())
+        .AddSingleton<IDb, Db>()
+        .AddScoped<IRegistrationData, RegistrationData>()
+        .AddScoped<IRegistrationService, RegistrationService>();
 
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 //============================Register Services============================

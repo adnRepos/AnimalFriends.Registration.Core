@@ -1,6 +1,7 @@
 ﻿using AnimalFriends.Registration.API.Models;
 using AnimalFriends.Registration.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace AnimalFriends.Registration.API.Controllers
 {
@@ -19,9 +20,17 @@ namespace AnimalFriends.Registration.API.Controllers
 
 
         [HttpGet("{id:int}")]
-        public string Get(int id)
+        public async Task<ActionResult<RegistrationDto>> Get(int id)
         {
-            return "value";
+            _logger.LogInformation("{@controller} - {@method} about to get task => {@id}", nameof(RegistrationController), nameof(Get), id);
+
+            var resource = await _registrationService.Get(id);
+            if (resource == null)
+            {
+                return NotFound($"Task Id with Id => {id} not found");
+            }
+
+            return Ok(resource);
         }
 
         [HttpPost]
@@ -30,6 +39,9 @@ namespace AnimalFriends.Registration.API.Controllers
         [ProducesResponseType(422)]
         public async Task<ActionResult<RegistrationDto>> Post([FromBody] RegistrationInput input)
         {
+            _logger.LogInformation("{@controller} - {@method} about to Post  => {@input}",
+                                   nameof(RegistrationController), nameof(Post), JsonSerializer.Serialize(input));
+
             if (!ModelState.IsValid)
             {
                 return UnprocessableEntity(ModelState);
