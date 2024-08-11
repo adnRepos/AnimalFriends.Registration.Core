@@ -12,7 +12,6 @@ namespace AnimalFriends.Registration.API.Services
     }
     public class RegistrationService : IRegistrationService
     {
-
         private ILogger<RegistrationService> _logger;
         private IRegistrationData _data;
         private IMapper _mapper;
@@ -33,14 +32,14 @@ namespace AnimalFriends.Registration.API.Services
 
             var dbo = await _data.Get(id);
             return _mapper.Map<RegistrationDto>(dbo);
-
-            throw new NotImplementedException();
         }
 
         public async Task<RegistrationDto> Create(RegistrationInput input)
         {
             ArgumentNullException.ThrowIfNull(input);
 
+            ValidateInput(input);
+           
             var dbo = _mapper.Map<RegistrationDbo>(input);
 
             var Id = await _data.Create(dbo);
@@ -50,18 +49,8 @@ namespace AnimalFriends.Registration.API.Services
 
         private bool ValidateInput(RegistrationInput input)
         {
-            //List<string> errors = new();
-            //if(string.IsNullOrWhiteSpace(input.FirstName) || input.FirstName.Length < 3)
-            //{
-            //    errors.a
-            //}
-
-
             return true;
         }
-
-
-
 
     }
 }

@@ -24,5 +24,20 @@ namespace AnimalFriends.Registration.API.Controllers
             return "value";
         }
 
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(422)]
+        public async Task<ActionResult<RegistrationDto>> Post([FromBody] RegistrationInput input)
+        {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
+            var resource = await _registrationService.Create(input);
+            return Ok(resource);
+        }
+
     }
 }
